@@ -17,12 +17,10 @@ class UserService(
 
     fun login(loginUser: LoginUser): String {
         if (!loginUser.username.isNullOrEmpty() && !loginUser.password.isNullOrEmpty()) {
-            val userDetails = customUserDetailsService.loadUserByUsername(loginUser.username!!)
-            val authToken = UsernamePasswordAuthenticationToken(loginUser.username, loginUser.password, userDetails.authorities)
+            val authToken = UsernamePasswordAuthenticationToken(loginUser.username, loginUser.password)
             authenticationManager.authenticate(authToken)
 
-            val user = userRepository.findByUsername(loginUser.username!!)
-
+            val userDetails = customUserDetailsService.loadUserByUsername(loginUser.username!!)
             return jwtTokenUtil.generateToken(userDetails)
         }
         return "Not authorized"

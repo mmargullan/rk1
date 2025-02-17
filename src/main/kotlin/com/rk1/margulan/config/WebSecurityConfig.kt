@@ -1,5 +1,6 @@
 package com.rk1.margulan.config
 
+import com.rk1.margulan.service.CustomUserDetailsService
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.authentication.AuthenticationManager
@@ -9,22 +10,24 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
+import org.springframework.security.crypto.password.NoOpPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
 
 @Configuration
 @EnableWebSecurity
 class WebSecurityConfig(
-    private val jwtAuthorizationFilter: JwtAuthorizationFilter
+    private val jwtAuthorizationFilter: JwtAuthorizationFilter,
+    private val customUserDetailsService: CustomUserDetailsService
 ) : WebSecurityConfigurerAdapter() {
 
     override fun configure(auth: AuthenticationManagerBuilder) {
-        auth.userDetailsService(userDetailsService()).passwordEncoder(passwordEncoder())
+        auth.userDetailsService(customUserDetailsService).passwordEncoder(passwordEncoder())
     }
 
     @Bean
     fun passwordEncoder(): PasswordEncoder {
-        return BCryptPasswordEncoder()
+        return NoOpPasswordEncoder.getInstance()
     }
 
     @Bean

@@ -14,8 +14,8 @@ class UserController(
 ) {
 
     @PostMapping("/login")
-    fun login(@RequestBody loginUser: LoginUser) {
-        userService.login(loginUser)
+    fun login(@RequestBody loginUser: LoginUser): String {
+        return userService.login(loginUser)
     }
 
     @GetMapping("/getAll")
