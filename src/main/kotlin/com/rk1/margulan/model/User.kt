@@ -7,7 +7,8 @@ import javax.persistence.*
     UniqueConstraint(name = "email_uniq", columnNames = ["email"]),
     UniqueConstraint(name = "username_uniq", columnNames = ["username"])
 ])
-class User {
+class User{
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null
@@ -28,4 +29,5 @@ class User {
         inverseJoinColumns = [JoinColumn(name = "role_id")]
     )
     var roles: Set<Role>? = null
+
 }
